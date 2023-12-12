@@ -1,16 +1,27 @@
 package blockbreaker.view.screen;
 
-import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Graphics;
+
+import blockbreaker.model.component.wall.Walls;
 
 public class PlayScreen extends Screen implements Runnable {
+	private Walls walls;
+
 	public PlayScreen() {
 		super();
+		this.setBackground(Color.GRAY);
 	}
 
 	@Override
 	protected void initScreen() {
-		JLabel l = new JLabel("game playing!");
-		add(l);
+		walls = new Walls();
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		walls.draw(g);
 	}
 
 	@Override
