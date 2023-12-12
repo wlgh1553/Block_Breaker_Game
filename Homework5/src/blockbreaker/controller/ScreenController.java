@@ -2,14 +2,14 @@ package blockbreaker.controller;
 
 import javax.swing.JFrame;
 
-import blockbreaker.view.Screen;
-import blockbreaker.view.TitleScreen;
+import blockbreaker.view.screen.PlayScreen;
+import blockbreaker.view.screen.Screen;
 
 public class ScreenController {
 	private Screen screen;
 
 	public ScreenController() {
-		screen = (Screen) new TitleScreen();
+		screen = (Screen) new PlayScreen();
 	}
 
 	public void showScreen(JFrame frame) {

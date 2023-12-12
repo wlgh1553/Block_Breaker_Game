@@ -1,4 +1,4 @@
-package blockbreaker.view;
+package blockbreaker.view.screen;
 
 import javax.swing.JPanel;
 
