@@ -8,6 +8,6 @@ public abstract class Component {
 	public void update(double dt) {
 	}
 
-	public void resolve(Component o) {
-	}
+//	public void resolve(Component o) {
+//	}
 }
