@@ -3,6 +3,8 @@ package blockbreaker.model.component.wall;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import blockbreaker.model.component.DetectableCollision;
+
 public class Walls {
 	public LinkedList<Wall> walls;
 
@@ -19,9 +21,9 @@ public class Walls {
 		}
 	}
 
-	public void update() {
+	public void addWalls(LinkedList<DetectableCollision> dtc) {
 		for (Wall w : walls) {
-			w.update(0.016); // 상수처리 해주자
+			dtc.add(w);
 		}
 	}
 }

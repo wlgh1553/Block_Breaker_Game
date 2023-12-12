@@ -3,11 +3,10 @@ package blockbreaker.model.component.ball;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import blockbreaker.model.component.Component;
-import blockbreaker.model.component.wall.Wall;
-import blockbreaker.model.component.wall.Walls;
+import blockbreaker.model.component.DetectableCollision;
+import blockbreaker.model.component.Reactive;
 
-public class Ball extends Component {
+public class Ball implements Reactive {
 	// 리팩토링 필요
 	private double x, y;
 	private final double radius;
@@ -25,20 +24,18 @@ public class Ball extends Component {
 	}
 
 	public static Ball getInitialBall() {
-		double angle = Math.random() * 3.141592 * 2;
+		double angle = 4;
 		double speed = 400; // 레벨별로 수정하기
 		double vx = Math.cos(angle) * speed;
-		double vy = -Math.abs(Math.sin(angle) * speed);
-		return new Ball(400, 700, vx, vy);
+		double vy = Math.sin(angle) * speed;
+		return new Ball(400, 700, vx, vy); // 위치는 상수로 만들기
 	}
 
-	@Override
 	public void draw(Graphics g) {
 		g.setColor(Color.white);
 		g.fillOval((int) (x - radius), (int) (y - radius), (int) (radius * 2), (int) (radius * 2));
 	}
 
-	@Override
 	public void update(double dt) {
 		prevX = x;
 		prevY = y;
@@ -47,34 +44,38 @@ public class Ball extends Component {
 	}
 
 	// 더 좋은 방법을 고민해보자
-	public void resolve(Walls walls) {
-		for (Wall w : walls.walls) {
-			checkCollision(w);
-		}
+	public void resolve(DetectableCollision d) {
+		checkCollision(d);
 	}
 
-	public void checkCollision(Wall wall) {
-		if (!wall.isCollision(x, y, radius))
+	// 아... 어쩌지..
+	@Override
+	public void resolve() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void checkCollision(DetectableCollision d) {
+		if (!d.isCollision(x, y, radius))
 			return;
 
 		// 더 좋은 방법을 고민해보자.
-		if (prevX < wall.xmin) {
+		if (prevX < d.xmin) {
 			vx = -vx;
-			x = wall.xmin;
+			x = d.xmin;
 		}
-		if (prevX > wall.xmax) {
+		if (prevX > d.xmax) {
 			vx = -vx;
-			x = wall.xmax;
+			x = d.xmax;
 		}
-		if (prevY < wall.ymin) {
+		if (prevY < d.ymin) {
 			vy = -vy;
-			y = wall.ymin;
+			y = d.ymin;
 		}
-		if (prevY > wall.ymax) {
+		if (prevY > d.ymax) {
 			vy = -vy;
-			y = wall.ymax;
+			y = d.ymax;
 		}
 
 	}
-
 }

@@ -3,7 +3,7 @@ package blockbreaker.model.component.ball;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
-import blockbreaker.model.component.wall.Walls;
+import blockbreaker.model.component.DetectableCollision;
 
 public class Balls {
 	private LinkedList<Ball> balls;
@@ -28,9 +28,11 @@ public class Balls {
 		}
 	}
 
-	public void resolve(Walls walls) {
-		for (Ball b : balls) {
-			b.resolve(walls);
+	public void resolve(LinkedList<DetectableCollision> dtc) {
+		for (DetectableCollision d : dtc) {
+			for (Ball b : balls) {
+				b.resolve(d);
+			}
 		}
 	}
 }
