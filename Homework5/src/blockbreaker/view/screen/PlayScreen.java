@@ -12,8 +12,8 @@ import blockbreaker.model.component.ball.Ball;
 import blockbreaker.model.component.ball.Balls;
 import blockbreaker.model.component.wall.Walls;
 
-public class PlayScreen extends Screen implements Runnable, KeyListener {
-	private Walls walls;
+public class PlayScreen extends Screen implements KeyListener {
+	private Walls walls; // wall은 스테이지와 관계없이 유지될 순 없나
 	private Balls balls;
 	private Racket racket;
 
@@ -23,6 +23,11 @@ public class PlayScreen extends Screen implements Runnable, KeyListener {
 	public PlayScreen() {
 		super();
 		this.setBackground(Color.GRAY);
+		initComponents();
+	}
+
+	private void initComponents() {
+		// stage에 알맞게 블록 개수와 공 속도 조절
 		walls = new Walls();
 		balls = new Balls();
 		balls.addBall(Ball.getInitialBall());
@@ -31,12 +36,19 @@ public class PlayScreen extends Screen implements Runnable, KeyListener {
 		walls.addWalls(dtc);
 		dtc.add(racket);
 
-		Thread thread = new Thread(this);
-		thread.start();
-
 		this.addKeyListener(this);
 		this.setFocusable(true);
 		this.requestFocus();
+	}
+
+	public void updateComponents(double dt) {
+		balls.update();
+		racket.update(dt);
+	}
+
+	public void resolveComponents() {
+		balls.resolve(dtc);
+		racket.resolve();
 	}
 
 	@Override
@@ -48,34 +60,12 @@ public class PlayScreen extends Screen implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void run() {
-		// game loop
-		while (true) {
-			// 1. update
-			balls.update();
-			racket.update(0.016);
-
-			// 2. resolve
-			balls.resolve(dtc);
-			racket.resolve();
-
-			// 3. render
-			repaint();
-
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {
-				return;
-			}
-		}
-	}
-
-	@Override
 	public void keyTyped(KeyEvent e) {
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("hi");
 		if (e.getKeyCode() == e.VK_LEFT) {
 			racket.moveLeft();
 		}
