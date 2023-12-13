@@ -1,8 +1,9 @@
-package blockbreaker.model.component.ball;
+package blockbreaker.model.components;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import blockbreaker.model.component.Ball;
 import blockbreaker.model.component.DetectableCollision;
 
 public class Balls {

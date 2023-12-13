@@ -1,10 +1,7 @@
-package blockbreaker.model.component.ball;
+package blockbreaker.model.component;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
-import blockbreaker.model.component.DetectableCollision;
-import blockbreaker.model.component.Reactive;
 
 public class Ball implements Reactive {
 	// 리팩토링 필요

@@ -6,11 +6,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
+import blockbreaker.model.component.Ball;
 import blockbreaker.model.component.DetectableCollision;
 import blockbreaker.model.component.Racket;
-import blockbreaker.model.component.ball.Ball;
-import blockbreaker.model.component.ball.Balls;
-import blockbreaker.model.component.wall.Walls;
+import blockbreaker.model.components.Balls;
+import blockbreaker.model.components.Walls;
 
 public class PlayScreen extends Screen implements KeyListener {
 	private Walls walls; // wall은 스테이지와 관계없이 유지될 순 없나

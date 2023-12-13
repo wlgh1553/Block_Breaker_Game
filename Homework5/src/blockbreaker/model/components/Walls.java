@@ -1,9 +1,10 @@
-package blockbreaker.model.component.wall;
+package blockbreaker.model.components;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
 
 import blockbreaker.model.component.DetectableCollision;
+import blockbreaker.model.component.Wall;
 
 public class Walls {
 	public LinkedList<Wall> walls;

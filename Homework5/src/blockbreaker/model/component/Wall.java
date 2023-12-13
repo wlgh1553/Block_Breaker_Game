@@ -1,9 +1,7 @@
-package blockbreaker.model.component.wall;
+package blockbreaker.model.component;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
-import blockbreaker.model.component.DetectableCollision;
 
 public class Wall extends DetectableCollision {
 
