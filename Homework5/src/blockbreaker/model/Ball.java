@@ -6,7 +6,12 @@ import java.awt.Point;
 
 public class Ball extends GameComponent {
 	public Ball(Point position, int radius) {
-		super(new BallIgnorer(), new MovingAction(10)); // 스피드 임시
+		super(new BallIgnorer(), new MovingAction(100) {
+			@Override
+			public void resolve() {
+				// 구현!
+			}
+		}); // 스피드 임시
 		super.position = position;
 		super.halfWidth = radius;
 		super.halfHeight = radius;
@@ -27,8 +32,4 @@ public class Ball extends GameComponent {
 		g.fillOval(position.x - halfWidth, position.y - halfHeight, 2 * halfWidth, 2 * halfHeight);
 	}
 
-	@Override
-	public void update(double dt) {
-		super.actionManager.update(super.position, dt);
-	}
 }

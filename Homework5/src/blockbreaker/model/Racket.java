@@ -7,14 +7,22 @@ import java.awt.Point;
 
 public class Racket extends GameComponent {
 	public Racket(Point midPos, int width, int height) {
-		super(new BallDetector(), new MovingAction(600)); // 스피드 임시
+		super(new BallDetector(), new MovingAction(600) {
+			@Override
+			public void resolve() {
+				if (midPos.x + width / 2 >= 800 - 34) {
+					midPos.x = 800 - 34 - width / 2;
+				} else if (midPos.x - width / 2 <= 20) {
+					midPos.x = 20 + width / 2;
+				}
+			}
+		}); // 스피드 임시
 		super.position = midPos;
 		super.halfWidth = width / 2;
 		super.halfHeight = height / 2;
 		super.color = new Color(150, 100, 100);
 	}
 
-	// left 0 stop 1 right 2
 	public void changeDirection(int sign) {
 		// 아.. 어쩔수 없이 다운캐스팅..
 		MovingAction move = (MovingAction) super.actionManager;
@@ -34,10 +42,5 @@ public class Racket extends GameComponent {
 		g.setColor(super.color);
 		g.fillRect(position.x - halfWidth + blinkSize, position.y - halfHeight + blinkSize,
 				2 * halfWidth - blinkSize * 2, 2 * halfHeight - blinkSize * 2);
-	}
-
-	@Override
-	public void update(double dt) {
-		super.actionManager.update(super.position, dt);
 	}
 }

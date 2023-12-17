@@ -100,9 +100,9 @@ class AnimatedAction implements Actionable { // block
 	}
 }
 
-class MovingAction implements Actionable { // ball, racket
+abstract class MovingAction implements Actionable { // ball, racket
 	private Point prev;
-	private double vx, vy;
+	protected double vx, vy;
 	private double speed;
 
 	MovingAction(double speed) {
@@ -127,8 +127,7 @@ class MovingAction implements Actionable { // ball, racket
 	}
 
 	@Override
-	public void resolve() {
-	}
+	abstract public void resolve();
 }
 
 public abstract class GameComponent {
@@ -145,5 +144,11 @@ public abstract class GameComponent {
 
 	abstract public void draw(Graphics2D g);
 
-	abstract public void update(double dt);
+	public void update(double dt) {
+		actionManager.update(position, dt);
+	}
+
+	public void resolve() {
+		actionManager.resolve();
+	}
 }

@@ -44,20 +44,16 @@ class PlayPanel extends JPanel implements KeyListener, Runnable {
 	public void run() {
 		while (true) {
 			// update
-			// 공
 			for (Ball b : balls) {
 				b.update(0.016);
 			}
-
-			// 벽 그리기
 			for (Wall w : walls) {
 				w.update(0.016);
 			}
-
-			// 라켓 그리기
 			racket.update(0.016);
 
 			// resolve
+			racket.resolve();
 
 			// render
 			repaint();
