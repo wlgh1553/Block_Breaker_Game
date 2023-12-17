@@ -22,7 +22,8 @@ public class Ball extends GameComponent {
 		super.halfHeight = radius;
 		super.color = Color.white;
 
-		double angle = Math.random() * 3.141592 * 2;
+		double degree = Math.random() * 90 + 45;
+		double angle = Math.toRadians(degree);
 		vx = Math.cos(angle) * speed;
 		vy = Math.sin(angle) * speed;
 	}

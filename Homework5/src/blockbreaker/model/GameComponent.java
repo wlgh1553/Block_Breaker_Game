@@ -16,7 +16,7 @@ class CollisionBoundary {
 	}
 
 	public boolean checkCollision(PrecisePoint ball) {
-		return ball.x > xmin && ball.x < xmax && ball.y > ymin && ball.y < ymax;
+		return ball.x >= xmin && ball.x <= xmax && ball.y >= ymin && ball.y <= ymax;
 	}
 
 	public double getXmin() {
