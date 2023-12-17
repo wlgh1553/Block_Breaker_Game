@@ -19,7 +19,8 @@ public class Wall extends GameComponent {
 	public void draw(Graphics2D g) {
 		Color startColor = super.color.brighter();
 		Color endColor = super.color.darker();
-		GradientPaint gradient = new GradientPaint(0, 0, startColor, 0, super.halfHeight * 2, endColor);
+		GradientPaint gradient = new GradientPaint(0, position.y - halfHeight, startColor, 0, position.y + halfHeight,
+				endColor);
 		g.setPaint(gradient);
 		g.fillRect(position.x - halfWidth, position.y - halfHeight, 2 * halfWidth, 2 * halfHeight);
 

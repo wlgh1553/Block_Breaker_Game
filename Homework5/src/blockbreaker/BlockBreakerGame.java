@@ -11,12 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import blockbreaker.model.Ball;
+import blockbreaker.model.Racket;
 import blockbreaker.model.Wall;
 
 //나중에 over 패널과 title 패널도 만들어서 계속 갈아끼우자.
 class PlayPanel extends JPanel {
 	LinkedList<Ball> balls;
 	LinkedList<Wall> walls;
+	Racket racket;
 
 	public PlayPanel() {
 		balls = new LinkedList<>();
@@ -26,6 +28,7 @@ class PlayPanel extends JPanel {
 		walls.add(new Wall(new Point(0, 0), 800, 20));
 		walls.add(new Wall(new Point(0, 20), 20, 800 - 20));
 		walls.add(new Wall(new Point(800 - 34, 20), 20, 800));
+		racket = new Racket(new Point(400, 680), 150, 30);
 	}
 
 	@Override
@@ -49,6 +52,9 @@ class PlayPanel extends JPanel {
 		for (Wall w : walls) {
 			w.draw(g2d);
 		}
+
+		// 라켓 그리기
+		racket.draw(g2d);
 	}
 }
 
