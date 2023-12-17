@@ -1,7 +1,7 @@
 package blockbreaker.model;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 //너무 마음에 안드는데 일단은!
@@ -122,5 +122,5 @@ public abstract class GameComponent {
 		this.actionManager = actionManager;
 	}
 
-	abstract public void draw(Graphics g);
+	abstract public void draw(Graphics2D g);
 }

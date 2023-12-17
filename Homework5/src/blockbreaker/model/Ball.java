@@ -1,7 +1,7 @@
 package blockbreaker.model;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class Ball extends GameComponent {
@@ -22,8 +22,8 @@ public class Ball extends GameComponent {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.setColor(super.color);
-		g.fillOval(position.x - halfWidth, position.y - halfHeight, halfWidth, halfHeight);
+		g.fillOval(position.x - halfWidth, position.y - halfHeight, 2 * halfWidth, 2 * halfHeight);
 	}
 }

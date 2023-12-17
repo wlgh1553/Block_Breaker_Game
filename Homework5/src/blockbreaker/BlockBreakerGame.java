@@ -5,18 +5,27 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import blockbreaker.model.Ball;
+import blockbreaker.model.Wall;
 
 //나중에 over 패널과 title 패널도 만들어서 계속 갈아끼우자.
 class PlayPanel extends JPanel {
-	Ball temp;
+	LinkedList<Ball> balls;
+	LinkedList<Wall> walls;
 
 	public PlayPanel() {
-		temp = new Ball(new Point(400, 650), 10);
+		balls = new LinkedList<>();
+		walls = new LinkedList<>();
+
+		balls.add(new Ball(new Point(400, 650), 5));
+		walls.add(new Wall(new Point(0, 0), 800, 20));
+		walls.add(new Wall(new Point(0, 20), 20, 800 - 20));
+		walls.add(new Wall(new Point(800 - 34, 20), 20, 800));
 	}
 
 	@Override
@@ -32,7 +41,14 @@ class PlayPanel extends JPanel {
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 
 		// 공 그리기
-		temp.draw(g);
+		for (Ball b : balls) {
+			b.draw(g2d);
+		}
+
+		// 벽 그리기
+		for (Wall w : walls) {
+			w.draw(g2d);
+		}
 	}
 }
 
