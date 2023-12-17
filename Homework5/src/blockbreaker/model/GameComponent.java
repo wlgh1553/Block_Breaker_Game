@@ -2,42 +2,42 @@ package blockbreaker.model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.util.LinkedList;
 
 //너무 마음에 안드는데 일단은!
 class CollisionBoundary {
-	private int xmin, ymin, xmax, ymax;
+	private double xmin, ymin, xmax, ymax;
 
-	public CollisionBoundary(int ballRadius, Point pos, int w, int h) {
-		xmin = pos.x - ballRadius;
-		xmax = pos.x + w + ballRadius;
-		ymin = pos.y - ballRadius;
-		ymax = pos.y + h + ballRadius;
+	public CollisionBoundary(int ballRadius, PrecisePoint pos, int hw, int hh) {
+		xmin = pos.x - hw - ballRadius;
+		xmax = pos.x + hw + ballRadius;
+		ymin = pos.y - hh - ballRadius;
+		ymax = pos.y + hh + ballRadius;
 	}
 
-	public boolean checkCollision(Point ball) {
-		return ball.x > xmin && ball.x < xmax && ball.y > ymin && ball.y > ymax;
+	public boolean checkCollision(PrecisePoint ball) {
+		return ball.x > xmin && ball.x < xmax && ball.y > ymin && ball.y < ymax;
 	}
 
-	public int getXmin() {
+	public double getXmin() {
 		return xmin;
 	}
 
-	public int getXmax() {
+	public double getXmax() {
 		return xmax;
 	}
 
-	public int getYmin() {
+	public double getYmin() {
 		return ymin;
 	}
 
-	public int getYmax() {
+	public double getYmax() {
 		return ymax;
 	}
 }
 
 interface BallDetectable {
-	public boolean isCollision(Ball ball, Point myPos, int w, int h);
+	public boolean isCollision(Ball ball, PrecisePoint precisePoint, int hw, int hh);
 
 	CollisionBoundary getCollisionBoundary();
 }
@@ -46,8 +46,8 @@ class BallDetector implements BallDetectable { // wall, block, racket
 	CollisionBoundary boundary;
 
 	@Override
-	public boolean isCollision(Ball ball, Point myPos, int w, int h) {
-		boundary = new CollisionBoundary(ball.getRadius(), myPos, w, h);
+	public boolean isCollision(Ball ball, PrecisePoint myPos, int hw, int hh) {
+		boundary = new CollisionBoundary(ball.getRadius(), myPos, hw, hh);
 		return boundary.checkCollision(ball.getPoint());
 	}
 
@@ -61,7 +61,7 @@ class BallDetector implements BallDetectable { // wall, block, racket
 class BallIgnorer implements BallDetectable {
 
 	@Override
-	public boolean isCollision(Ball ball, Point myPos, int w, int h) {
+	public boolean isCollision(Ball ball, PrecisePoint myPos, int hw, int hh) {
 		return false;
 	}
 
@@ -72,83 +72,42 @@ class BallIgnorer implements BallDetectable {
 
 }
 
-interface Actionable {
-	public void update(Point now, double dt);
+class PrecisePoint {
+	double x;
+	double y;
 
-	public void resolve();
-}
-
-class StaticAction implements Actionable { // wall
-
-	@Override
-	public void update(Point now, double dt) { // do not anything
+	PrecisePoint(int _x, int _y) {
+		x = _x;
+		y = _y;
 	}
-
-	@Override
-	public void resolve() { // do not anything
-	}
-
-}
-
-class AnimatedAction implements Actionable { // block
-	@Override
-	public void update(Point now, double dt) {
-	}
-
-	@Override
-	public void resolve() {
-	}
-}
-
-abstract class MovingAction implements Actionable { // ball, racket
-	private Point prev;
-	protected double vx, vy;
-	private double speed;
-
-	MovingAction(double speed) {
-		prev = new Point(0, 0);
-		this.speed = speed;
-		vx = 0;
-		vy = 0;
-	}
-
-	public void setvx(int sign) {
-		this.vx = speed * sign;
-	}
-
-	@Override
-	public void update(Point now, double dt) {
-		double x = now.getX() + vx * dt;
-		double y = now.getY() + vy * dt;
-
-		// 이래도 될까?
-		now.x = (int) x;
-		now.y = (int) y;
-	}
-
-	@Override
-	abstract public void resolve();
 }
 
 public abstract class GameComponent {
-	protected Point position; // 네모든 원이든 중심 위치로!
+	protected PrecisePoint position; // 네모든 원이든 중심 위치로!
 	protected int halfWidth, halfHeight; //
 	protected Color color;
 	protected BallDetectable collisionManager;
-	protected Actionable actionManager;
 
-	GameComponent(BallDetectable collisionManager, Actionable actionManager) {
+	GameComponent(BallDetectable collisionManager) {
 		this.collisionManager = collisionManager;
-		this.actionManager = actionManager;
 	}
 
 	abstract public void draw(Graphics2D g);
 
-	public void update(double dt) {
-		actionManager.update(position, dt);
+	abstract public void update(double dt);
+
+	abstract public void resolve(LinkedList<GameComponent> others);
+
+	public PrecisePoint getPoint() {
+		return position;
 	}
 
-	public void resolve() {
-		actionManager.resolve();
+	public int getHalfWidth() {
+		return halfWidth;
 	}
+
+	public int getHalfHeight() {
+		return halfHeight;
+	}
+
 }
