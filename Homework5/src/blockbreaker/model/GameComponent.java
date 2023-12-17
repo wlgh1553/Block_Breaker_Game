@@ -73,7 +73,7 @@ class BallIgnorer implements BallDetectable {
 }
 
 interface Actionable {
-	public void update(double dt);
+	public void update(Point now, double dt);
 
 	public void resolve();
 }
@@ -81,18 +81,18 @@ interface Actionable {
 class StaticAction implements Actionable { // wall
 
 	@Override
-	public void update(double dt) {
+	public void update(Point now, double dt) { // do not anything
 	}
 
 	@Override
-	public void resolve() {
+	public void resolve() { // do not anything
 	}
 
 }
 
 class AnimatedAction implements Actionable { // block
 	@Override
-	public void update(double dt) {
+	public void update(Point now, double dt) {
 	}
 
 	@Override
@@ -101,8 +101,29 @@ class AnimatedAction implements Actionable { // block
 }
 
 class MovingAction implements Actionable { // ball, racket
+	private Point prev;
+	private double vx, vy;
+	private double speed;
+
+	MovingAction(double speed) {
+		prev = new Point(0, 0);
+		this.speed = speed;
+		vx = 0;
+		vy = 0;
+	}
+
+	public void setvx(int sign) {
+		this.vx = speed * sign;
+	}
+
 	@Override
-	public void update(double dt) {
+	public void update(Point now, double dt) {
+		double x = now.getX() + vx * dt;
+		double y = now.getY() + vy * dt;
+
+		// 이래도 될까?
+		now.x = (int) x;
+		now.y = (int) y;
 	}
 
 	@Override
@@ -114,8 +135,8 @@ public abstract class GameComponent {
 	protected Point position; // 네모든 원이든 중심 위치로!
 	protected int halfWidth, halfHeight; //
 	protected Color color;
-	private BallDetectable collisionManager;
-	private Actionable actionManager;
+	protected BallDetectable collisionManager;
+	protected Actionable actionManager;
 
 	GameComponent(BallDetectable collisionManager, Actionable actionManager) {
 		this.collisionManager = collisionManager;
@@ -123,4 +144,6 @@ public abstract class GameComponent {
 	}
 
 	abstract public void draw(Graphics2D g);
+
+	abstract public void update(double dt);
 }

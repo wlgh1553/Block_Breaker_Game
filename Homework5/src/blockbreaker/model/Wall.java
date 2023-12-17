@@ -30,4 +30,9 @@ public class Wall extends GameComponent {
 				2 * halfWidth - blinkSize * 2, 2 * halfHeight - blinkSize * 2);
 	}
 
+	@Override
+	public void update(double dt) {
+		super.actionManager.update(super.position, dt);
+	}
+
 }
