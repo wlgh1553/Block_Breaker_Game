@@ -33,7 +33,7 @@ class BasicBlock extends GameBlock {
 
 	@Override
 	void draw(Graphics2D g, Block b) {
-		Color startColor = new Color(225, 225, 225);
+		Color startColor = new Color(225, 200, 225);
 		Color endColor = new Color(62, 48, 66);
 		super.drawRect(g, startColor, endColor, b);
 	}
@@ -68,13 +68,25 @@ public class Block extends GameComponent {
 		int cnt = stage * 3;
 		double blockWidth = blocksWidth / (double) cnt;
 		double blockHeight = blocksHeight / (double) cnt;
+		int replicatorBlockCnt = 0;
 
 		for (int i = 0; i < cnt; i++) {
 			for (int j = 0; j < cnt; j++) {
 				double startX = blocksStart.x + blockWidth * j;
 				double startY = blocksStart.y + blockHeight * i;
 				PrecisePoint start = new PrecisePoint(startX, startY);
-				components.add(new Block(start, blockWidth, blockHeight, new BasicBlock()));
+				GameBlock gameBlock;
+				if (replicatorBlockCnt < cnt * cnt / 2) {
+					boolean flag = ((int) (Math.random() * 100)) % 3 == 0;
+					if (flag) {
+						gameBlock = new ReplicatorBlock();
+						replicatorBlockCnt++;
+					} else {
+						gameBlock = new BasicBlock();
+					}
+				} else
+					gameBlock = new BasicBlock();
+				components.add(new Block(start, blockWidth, blockHeight, gameBlock));
 			}
 		}
 	}
