@@ -28,14 +28,15 @@ public class Ball extends GameComponent {
 		vy = Math.sin(angle) * speed;
 	}
 
-	public int getRadius() {
+	public double getRadius() {
 		return super.halfHeight;
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(super.color);
-		g.fillOval((int) (position.x - halfWidth), (int) (position.y - halfHeight), 2 * halfWidth, 2 * halfHeight);
+		g.fillOval((int) (position.x - halfWidth), (int) (position.y - halfHeight), (int) (2 * halfWidth),
+				(int) (2 * halfHeight));
 	}
 
 	@Override

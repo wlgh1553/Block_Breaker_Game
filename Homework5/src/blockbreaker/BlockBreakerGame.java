@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import blockbreaker.model.Ball;
+import blockbreaker.model.Block;
 import blockbreaker.model.GameComponent;
 import blockbreaker.model.Racket;
 import blockbreaker.model.Wall;
@@ -32,6 +33,7 @@ class PlayPanel extends JPanel implements KeyListener, Runnable {
 		components.add(new Wall(new Point(800 - 34, 20), 20, 800));
 		racket = new Racket(new Point(400, 680), 150, 30);
 		components.add(racket);
+		Block.createBlock(2, new Point(20, 20), 800 - 54, 400, components);
 
 		Thread t = new Thread(this);
 		t.start();

@@ -32,12 +32,14 @@ public class Racket extends GameComponent {
 		GradientPaint gradient = new GradientPaint(0, (int) (position.y - halfHeight), startColor, 0,
 				(int) (position.y + halfHeight), endColor);
 		g.setPaint(gradient);
-		g.fillRect((int) (position.x - halfWidth), (int) (position.y - halfHeight), 2 * halfWidth, 2 * halfHeight);
+		g.fillRect((int) (position.x - halfWidth), (int) (position.y - halfHeight), (int) (2 * halfWidth),
+				(int) (2 * halfHeight));
 
 		int blinkSize = 3;
 		g.setColor(super.color);
 		g.fillRect((int) (position.x - halfWidth + blinkSize), (int) (position.y - halfHeight + blinkSize),
-				2 * halfWidth - blinkSize * 2, 2 * halfHeight - blinkSize * 2);
+				(int) (2 * (halfWidth - blinkSize)), (int) (2 * (halfHeight - blinkSize)));
+
 	}
 
 	@Override

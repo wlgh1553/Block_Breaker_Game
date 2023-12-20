@@ -8,7 +8,7 @@ import java.util.LinkedList;
 class CollisionBoundary {
 	private double xmin, ymin, xmax, ymax;
 
-	public CollisionBoundary(int ballRadius, PrecisePoint pos, int hw, int hh) {
+	public CollisionBoundary(double ballRadius, PrecisePoint pos, double hw, double hh) {
 		xmin = pos.x - hw - ballRadius;
 		xmax = pos.x + hw + ballRadius;
 		ymin = pos.y - hh - ballRadius;
@@ -37,7 +37,7 @@ class CollisionBoundary {
 }
 
 interface BallDetectable {
-	public boolean isCollision(Ball ball, PrecisePoint precisePoint, int hw, int hh);
+	public boolean isCollision(Ball ball, PrecisePoint precisePoint, double hw, double hh);
 
 	CollisionBoundary getCollisionBoundary();
 }
@@ -46,7 +46,7 @@ class BallDetector implements BallDetectable { // wall, block, racket
 	CollisionBoundary boundary;
 
 	@Override
-	public boolean isCollision(Ball ball, PrecisePoint myPos, int hw, int hh) {
+	public boolean isCollision(Ball ball, PrecisePoint myPos, double hw, double hh) {
 		boundary = new CollisionBoundary(ball.getRadius(), myPos, hw, hh);
 		return boundary.checkCollision(ball.getPoint());
 	}
@@ -61,7 +61,7 @@ class BallDetector implements BallDetectable { // wall, block, racket
 class BallIgnorer implements BallDetectable {
 
 	@Override
-	public boolean isCollision(Ball ball, PrecisePoint myPos, int hw, int hh) {
+	public boolean isCollision(Ball ball, PrecisePoint myPos, double hw, double hh) {
 		return false;
 	}
 
@@ -80,11 +80,16 @@ class PrecisePoint {
 		x = _x;
 		y = _y;
 	}
+
+	PrecisePoint(double _x, double _y) {
+		x = _x;
+		y = _y;
+	}
 }
 
 public abstract class GameComponent {
 	protected PrecisePoint position; // 네모든 원이든 중심 위치로!
-	protected int halfWidth, halfHeight; //
+	protected double halfWidth, halfHeight;
 	protected Color color;
 	protected BallDetectable collisionManager;
 
@@ -98,16 +103,15 @@ public abstract class GameComponent {
 
 	abstract public void resolve(LinkedList<GameComponent> others);
 
-	public PrecisePoint getPoint() {
+	PrecisePoint getPoint() {
 		return position;
 	}
 
-	public int getHalfWidth() {
-		return halfWidth;
-	}
-
-	public int getHalfHeight() {
+	double getHalfHeight() {
 		return halfHeight;
 	}
 
+	double getHalfWidth() {
+		return halfWidth;
+	}
 }
