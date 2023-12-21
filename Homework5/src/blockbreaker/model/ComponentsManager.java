@@ -3,7 +3,6 @@ package blockbreaker.model;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,15 +10,14 @@ import java.util.List;
 public class ComponentsManager {
 	int stage;
 	private LinkedList<GameComponent> components;
-	private HashSet<GameComponent> needToEraseComponents;
 	private LinkedList<Ball> needToAddBalls;
+	private LinkedList<Block> fadingBlocks;
 	Racket racket;
-	private int ballCnt = -1, blockCnt = -1;
 
 	public ComponentsManager(int stage) {
 		components = new LinkedList<>();
-		needToEraseComponents = new HashSet<>();
 		needToAddBalls = new LinkedList<>();
+		fadingBlocks = new LinkedList<>();
 		this.stage = stage;
 
 		// 초기 컴포넌트 구성하기
@@ -40,24 +38,16 @@ public class ComponentsManager {
 		Block.createBlock(stage, new Point(20, 20), 800 - 54, 400, components);
 	}
 
-	public void addEraseThing(GameComponent e) {
-		needToEraseComponents.add(e);
-	}
-
 	public void addDuplicatedThing(Ball b) {
 		needToAddBalls.add(b);
 	}
 
 	public void update() {
-		ballCnt = 0;
-		blockCnt = 0;
-
 		for (GameComponent g : components) {
 			g.update(0.016);
-			if (g instanceof Ball)
-				ballCnt++;
-			else if (g instanceof Block)
-				blockCnt++;
+		}
+		for (Block b : fadingBlocks) {
+			b.update(0.016);
 		}
 	}
 
@@ -70,28 +60,52 @@ public class ComponentsManager {
 		Iterator<GameComponent> iter = components.iterator();
 		while (iter.hasNext()) {
 			GameComponent here = iter.next();
-			if (needToEraseComponents.contains(here)) {
+			if (!here.isAlive) {
+				if (here instanceof Block) {
+					fadingBlocks.add((Block) here);
+				}
 				iter.remove();
 			}
 		}
-		needToEraseComponents.clear();
 
 		// 복제된 공 추가하기
 		components.addAll(needToAddBalls);
 		needToAddBalls.clear();
+
+		// 블록 희미해지면 애니메이션 끝내기
+		Iterator<Block> blockIter = fadingBlocks.iterator();
+		while (blockIter.hasNext()) {
+			Block here = blockIter.next();
+			if (here.isFadingFinish()) {
+				blockIter.remove();
+			}
+		}
 	}
 
 	public boolean isGameOver() {
-		return ballCnt == 0;
+		int cnt = 0;
+		for (GameComponent g : components) {
+			if (g instanceof Ball)
+				cnt++;
+		}
+		return cnt == 0;
 	}
 
 	public boolean isGameClear() {
-		return blockCnt == 0;
+		int cnt = 0;
+		for (GameComponent g : components) {
+			if (g instanceof Block)
+				cnt++;
+		}
+		return cnt == 0;
 	}
 
 	public void paint(Graphics2D g2d) {
 		for (GameComponent gc : components) {
 			gc.draw(g2d);
+		}
+		for (Block b : fadingBlocks) {
+			b.draw(g2d);
 		}
 	}
 

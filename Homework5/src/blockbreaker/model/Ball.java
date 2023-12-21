@@ -69,7 +69,7 @@ public class Ball extends GameComponent {
 	public void resolve(ComponentsManager manager) {
 		// 화면 밖으로 나갔는지 검사
 		if (this.position.y > 800) {
-			manager.addEraseThing(this);
+			super.isAlive = false;
 		}
 
 		// 충돌 검사
@@ -97,7 +97,7 @@ public class Ball extends GameComponent {
 				}
 
 				if (other instanceof Block) {
-					manager.addEraseThing(other);
+					other.isAlive = false;
 					Block b = (Block) other;
 					b.affectBalls(manager, this);
 				}

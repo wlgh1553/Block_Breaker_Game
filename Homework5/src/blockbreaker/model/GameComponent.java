@@ -88,9 +88,11 @@ public abstract class GameComponent {
 	protected double halfWidth, halfHeight;
 	protected Color color;
 	protected BallDetectable collisionManager;
+	protected boolean isAlive;
 
 	GameComponent(BallDetectable collisionManager) {
 		this.collisionManager = collisionManager;
+		this.isAlive = true;
 	}
 
 	abstract public void draw(Graphics2D g);

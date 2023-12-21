@@ -8,6 +8,12 @@ import java.util.LinkedList;
 
 abstract class GameBlock {
 	protected Color color;
+	private int alpha; // 0 투명 255 불투명
+
+	GameBlock(Color c) {
+		color = c;
+		alpha = 255;
+	}
 
 	abstract void draw(Graphics2D g, Block b);
 
@@ -19,6 +25,7 @@ abstract class GameBlock {
 				(int) (2 * block.halfWidth), (int) (2 * block.halfHeight));
 
 		double blinkSize = block.halfHeight / 13;
+
 		g.setColor(color);
 		g.fillRect((int) (block.position.x - block.halfWidth + blinkSize),
 				(int) (block.position.y - block.halfHeight + blinkSize), (int) (2 * (block.halfWidth - blinkSize)),
@@ -26,17 +33,28 @@ abstract class GameBlock {
 	}
 
 	abstract public void affectBalls(ComponentsManager manager, Ball core);
+
+	public void updateTransparency() {
+		alpha -= 10;
+		if (alpha < 0)
+			alpha = 0;
+		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+	}
+
+	public boolean isAlphaZero() {
+		return alpha == 0;
+	}
 }
 
 class BasicBlock extends GameBlock {
 	BasicBlock() {
-		super.color = new Color(150, 100, 150);
+		super(new Color(150, 100, 150));
 	}
 
 	@Override
 	void draw(Graphics2D g, Block b) {
-		Color startColor = new Color(225, 200, 225);
-		Color endColor = new Color(62, 48, 66);
+		Color startColor = color.brighter().brighter();
+		Color endColor = color.darker().darker();
 		super.drawRect(g, startColor, endColor, b);
 	}
 
@@ -48,13 +66,13 @@ class BasicBlock extends GameBlock {
 
 class ReplicatorBlock extends GameBlock {
 	ReplicatorBlock() {
-		super.color = new Color(200, 200, 0);
+		super(new Color(200, 200, 0));
 	}
 
 	@Override
 	void draw(Graphics2D g, Block b) {
-		Color startColor = new Color(250, 250, 60);
-		Color endColor = new Color(85, 85, 0);
+		Color startColor = color.brighter().brighter();
+		Color endColor = color.darker().darker();
 		super.drawRect(g, startColor, endColor, b);
 	}
 
@@ -109,6 +127,10 @@ public class Block extends GameComponent {
 		blockManager.affectBalls(manager, core);
 	}
 
+	public boolean isFadingFinish() {
+		return blockManager.isAlphaZero();
+	}
+
 	@Override
 	public void draw(Graphics2D g) {
 		blockManager.draw(g, this);
@@ -116,8 +138,10 @@ public class Block extends GameComponent {
 
 	@Override
 	public void update(double dt) {
-		// TODO Auto-generated method stub
+		if (this.isAlive)
+			return;
 
+		blockManager.updateTransparency();
 	}
 
 	@Override
