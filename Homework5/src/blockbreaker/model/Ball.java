@@ -13,7 +13,28 @@ public class Ball extends GameComponent {
 	public Ball(Point pos, int stage) {
 		super(new BallIgnorer());
 
-		super.position = new PrecisePoint(pos.x, pos.y);
+		initShapeInfo(pos.x, pos.y);
+
+		double speed = (stage + 2) * 100;
+		double degree = Math.random() * 90 + 45;
+		double angle = Math.toRadians(degree);
+		vx = Math.cos(angle) * speed;
+		vy = Math.sin(angle) * speed;
+	}
+
+	public Ball(Ball core, double degree) {
+		super(new BallIgnorer());
+
+		initShapeInfo(core.position.x, core.position.y);
+
+		double cos = Math.cos(Math.toRadians(degree));
+		double sin = Math.sin(Math.toRadians(degree));
+		vx = core.vx * cos - core.vy * sin;
+		vy = core.vx * sin + core.vy * cos;
+	}
+
+	private void initShapeInfo(double x, double y) {
+		super.position = new PrecisePoint(x, y);
 		prevx = position.x;
 		prevy = position.y;
 		nowx = prevx;
@@ -21,12 +42,6 @@ public class Ball extends GameComponent {
 		super.halfWidth = RADIUS;
 		super.halfHeight = RADIUS;
 		super.color = Color.white;
-
-		double speed = (stage + 2) * 100;
-		double degree = Math.random() * 90 + 45;
-		double angle = Math.toRadians(degree);
-		vx = Math.cos(angle) * speed;
-		vy = Math.sin(angle) * speed;
 	}
 
 	public double getRadius() {
@@ -83,6 +98,8 @@ public class Ball extends GameComponent {
 
 				if (other instanceof Block) {
 					manager.addEraseThing(other);
+					Block b = (Block) other;
+					b.affectBalls(manager, this);
 				}
 
 			}

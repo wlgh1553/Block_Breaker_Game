@@ -12,12 +12,14 @@ public class ComponentsManager {
 	int stage;
 	private LinkedList<GameComponent> components;
 	private HashSet<GameComponent> needToEraseComponents;
+	private LinkedList<Ball> needToAddBalls;
 	Racket racket;
 	private int ballCnt = -1, blockCnt = -1;
 
 	public ComponentsManager(int stage) {
 		components = new LinkedList<>();
 		needToEraseComponents = new HashSet<>();
+		needToAddBalls = new LinkedList<>();
 		this.stage = stage;
 
 		// 초기 컴포넌트 구성하기
@@ -42,6 +44,10 @@ public class ComponentsManager {
 		needToEraseComponents.add(e);
 	}
 
+	public void addDuplicatedThing(Ball b) {
+		needToAddBalls.add(b);
+	}
+
 	public void update() {
 		ballCnt = 0;
 		blockCnt = 0;
@@ -60,6 +66,7 @@ public class ComponentsManager {
 			g.resolve(this);
 		}
 
+		// 충돌한 벽, 밖으로 나간 공 지우기
 		Iterator<GameComponent> iter = components.iterator();
 		while (iter.hasNext()) {
 			GameComponent here = iter.next();
@@ -67,6 +74,11 @@ public class ComponentsManager {
 				iter.remove();
 			}
 		}
+		needToEraseComponents.clear();
+
+		// 복제된 공 추가하기
+		components.addAll(needToAddBalls);
+		needToAddBalls.clear();
 	}
 
 	public boolean isGameOver() {

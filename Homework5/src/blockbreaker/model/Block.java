@@ -24,6 +24,8 @@ abstract class GameBlock {
 				(int) (block.position.y - block.halfHeight + blinkSize), (int) (2 * (block.halfWidth - blinkSize)),
 				(int) (2 * (block.halfHeight - blinkSize)));
 	}
+
+	abstract public void affectBalls(ComponentsManager manager, Ball core);
 }
 
 class BasicBlock extends GameBlock {
@@ -37,6 +39,11 @@ class BasicBlock extends GameBlock {
 		Color endColor = new Color(62, 48, 66);
 		super.drawRect(g, startColor, endColor, b);
 	}
+
+	@Override
+	public void affectBalls(ComponentsManager manager, Ball core) {
+		// nothing
+	}
 }
 
 class ReplicatorBlock extends GameBlock {
@@ -49,6 +56,13 @@ class ReplicatorBlock extends GameBlock {
 		Color startColor = new Color(250, 250, 60);
 		Color endColor = new Color(85, 85, 0);
 		super.drawRect(g, startColor, endColor, b);
+	}
+
+	@Override
+	public void affectBalls(ComponentsManager manager, Ball core) {
+		// duplicate
+		manager.addDuplicatedThing(new Ball(core, 10));
+		manager.addDuplicatedThing(new Ball(core, -10));
 	}
 }
 
@@ -89,6 +103,10 @@ public class Block extends GameComponent {
 				components.add(new Block(start, blockWidth, blockHeight, gameBlock));
 			}
 		}
+	}
+
+	public void affectBalls(ComponentsManager manager, Ball core) {
+		blockManager.affectBalls(manager, core);
 	}
 
 	@Override

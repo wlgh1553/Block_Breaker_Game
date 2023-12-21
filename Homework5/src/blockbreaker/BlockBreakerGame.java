@@ -18,7 +18,7 @@ class PlayPanel extends JPanel implements KeyListener, Runnable {
 	ComponentsManager componentManager;
 
 	public PlayPanel() {
-		int stage = 1;
+		int stage = 2;
 		componentManager = new ComponentsManager(stage);
 
 		Thread t = new Thread(this);
