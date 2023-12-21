@@ -1,22 +1,18 @@
 package blockbreaker.view;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.JPanel;
-
+import blockbreaker.BlockBreakerGame;
 import blockbreaker.model.ComponentsManager;
 
-public class PlayPanel extends JPanel implements KeyListener, Runnable {
-	// 다 짬뽕해서 관리해보자
+public class PlayPanel extends Screen implements Runnable {
 	ComponentsManager componentManager;
+	private boolean isClearStage = false;
 
-	public PlayPanel() {
-		int stage = 1;
+	public PlayPanel(BlockBreakerGame b, int stage) {
+		super(b);
 		componentManager = new ComponentsManager(stage);
 
 		Thread t = new Thread(this);
@@ -32,12 +28,8 @@ public class PlayPanel extends JPanel implements KeyListener, Runnable {
 		super.paintComponent(g);
 
 		// 그라데이션 배경 그리기
-		Color startColor = Color.black;
-		Color endColor = new Color(127, 127, 166);
-		GradientPaint gradient = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setPaint(gradient);
-		g2d.fillRect(0, 0, getWidth(), getHeight());
+		super.drawBackground(g);
 
 		// 컴포넌트 그리기
 		componentManager.paint(g2d);
@@ -46,10 +38,13 @@ public class PlayPanel extends JPanel implements KeyListener, Runnable {
 	@Override
 	public void run() {
 		while (true) {
+			if (isClearStage)
+				break;
 			if (componentManager.isGameClear()) {
 				System.out.println("clear!!");
 			} else if (componentManager.isGameOver()) {
-				System.out.println("overㅠㅠ");
+				isClearStage = true;
+				super.controller.changeScreen(new EndPanel(controller));
 			}
 
 			// update
@@ -81,8 +76,9 @@ public class PlayPanel extends JPanel implements KeyListener, Runnable {
 		} else if (e.getKeyCode() == e.VK_RIGHT) {
 			componentManager.changeRacketDirection(1);
 			repaint();
+		} else if (e.getKeyCode() == e.VK_SPACE) {
+			super.controller.changeScreen(new EndPanel(controller));
 		}
-
 	}
 
 	@Override

@@ -2,15 +2,13 @@ package blockbreaker.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import blockbreaker.BlockBreakerGame;
 
 class MyText extends JLabel implements Runnable {
 	private int interval;
@@ -48,12 +46,14 @@ class MyText extends JLabel implements Runnable {
 			turnOn = !turnOn;
 		}
 	}
+
 }
 
-public class StartPanel extends JPanel implements KeyListener {
+public class StartPanel extends Screen {
 	LinkedList<MyText> texts = new LinkedList<>();
 
-	public StartPanel() {
+	public StartPanel(BlockBreakerGame b) {
+		super(b);
 		Font f = new Font("Arial", Font.PLAIN, 50);
 		MyText subTitle1 = new MyText("Java Programming", f, Color.white, 0);
 		subTitle1.setBounds(190, 100, 700, 60);
@@ -83,12 +83,7 @@ public class StartPanel extends JPanel implements KeyListener {
 		super.paintComponent(g);
 
 		// 그라데이션 배경 그리기
-		Color startColor = Color.black;
-		Color endColor = new Color(127, 127, 166);
-		GradientPaint gradient = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setPaint(gradient);
-		g2d.fillRect(0, 0, getWidth(), getHeight());
+		super.drawBackground(g);
 	}
 
 	@Override
@@ -98,12 +93,13 @@ public class StartPanel extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
+		if (e.getKeyCode() == e.VK_SPACE) {
+			super.controller.changeScreen(new PlayPanel(controller, 1));
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 
 	}
-
 }

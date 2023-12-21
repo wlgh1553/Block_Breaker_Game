@@ -1,16 +1,13 @@
 package blockbreaker;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import blockbreaker.view.PlayPanel;
 import blockbreaker.view.StartPanel;
 
-public class BlockBreakerGame extends JFrame implements KeyListener {
+public class BlockBreakerGame extends JFrame {
 	JPanel now;
+	int nowScore, maxScore;
 
 	public BlockBreakerGame() {
 		setTitle("Java Homework4");
@@ -18,39 +15,21 @@ public class BlockBreakerGame extends JFrame implements KeyListener {
 		setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		now = new StartPanel();
+		now = new StartPanel(this);
 		add(now);
-		this.addKeyListener(this);
-		this.setFocusable(true);
-		this.requestFocus();
 
 		setVisible(true);
 	}
 
+	public void changeScreen(JPanel next) {
+		now.setVisible(false);
+		now = next;
+		add(now);
+		now.setFocusable(true);
+		now.requestFocus();
+	}
+
 	public static void main(String[] args) {
 		new BlockBreakerGame();
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == e.VK_SPACE) {
-			now.setVisible(false);
-			now = new PlayPanel();
-			add(now);
-			now.setFocusable(true);
-			now.requestFocus();
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }
