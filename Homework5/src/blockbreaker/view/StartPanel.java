@@ -4,15 +4,23 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.LinkedList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import blockbreaker.BlockBreakerGame;
 
 public class StartPanel extends Screen {
 	LinkedList<MyText> texts = new LinkedList<>();
+	Clip audio = null;
 
 	public StartPanel(BlockBreakerGame b) {
 		super(b);
+		setAudio();
+
 		Font f = new Font("Arial", Font.PLAIN, 50);
 		MyText subTitle1 = new MyText("Java Programming", f, Color.white, 0);
 		subTitle1.setBounds(190, 100, 700, 60);
@@ -39,6 +47,19 @@ public class StartPanel extends Screen {
 		b.resetNowScore();
 	}
 
+	private void setAudio() {
+		try {
+			audio = AudioSystem.getClip();
+			File audioFile = new File("sound/시작화면.wav");
+			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+			audio.open(stream);
+			audio.setFramePosition(0);
+			audio.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -55,6 +76,7 @@ public class StartPanel extends Screen {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == e.VK_SPACE) {
+			audio.stop();
 			super.controller.changeScreen(new PlayPanel(controller, 1));
 		}
 	}

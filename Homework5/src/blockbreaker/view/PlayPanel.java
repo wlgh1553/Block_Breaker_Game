@@ -3,6 +3,11 @@ package blockbreaker.view;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import blockbreaker.BlockBreakerGame;
 import blockbreaker.model.ComponentsManager;
@@ -44,10 +49,12 @@ public class PlayPanel extends Screen implements Runnable {
 				break;
 			if (componentManager.isGameClear()) {
 				isClearStage = true;
+				playGameClearBGM();
 				super.controller.updateNowScore(componentManager.getRemovedBlockCnt());
 				super.controller.changeScreen(new PlayPanel(super.controller, stage + 1));
 			} else if (componentManager.isGameOver()) {
 				isClearStage = true;
+				playGameOverBGM();
 				super.controller.updateNowScore(componentManager.getRemovedBlockCnt());
 				super.controller.changeScreen(new EndPanel(controller));
 			}
@@ -83,6 +90,7 @@ public class PlayPanel extends Screen implements Runnable {
 			repaint();
 		} else if (e.getKeyCode() == e.VK_SPACE) {
 			isClearStage = true;
+			playGameOverBGM();
 			super.controller.updateNowScore(componentManager.getRemovedBlockCnt());
 			super.controller.changeScreen(new EndPanel(controller));
 		}
@@ -92,6 +100,27 @@ public class PlayPanel extends Screen implements Runnable {
 	public void keyReleased(KeyEvent e) {
 		componentManager.changeRacketDirection(0);
 		repaint();
+	}
+
+	private void playGameClearBGM() {
+		playSound("sound/게임클리어.wav");
+	}
+
+	private void playGameOverBGM() {
+		playSound("sound/게임오버.wav");
+	}
+
+	private void playSound(String path) {
+		try {
+			Clip audio = AudioSystem.getClip();
+			File audioFile = new File(path);
+			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+			audio.open(stream);
+			audio.setFramePosition(0);
+			audio.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

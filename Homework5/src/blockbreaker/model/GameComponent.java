@@ -2,6 +2,11 @@ package blockbreaker.model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 //너무 마음에 안드는데 일단은!
 class CollisionBoundary {
@@ -56,7 +61,6 @@ class BallDetector implements BallDetectable { // wall, block, racket
 	public CollisionBoundary getCollisionBoundary() {
 		return boundary;
 	}
-
 }
 
 class BallIgnorer implements BallDetectable {
@@ -70,7 +74,6 @@ class BallIgnorer implements BallDetectable {
 	public CollisionBoundary getCollisionBoundary() {
 		return null;
 	}
-
 }
 
 class PrecisePoint {
@@ -101,6 +104,8 @@ public abstract class GameComponent {
 
 	abstract public void resolve(ComponentsManager manager);
 
+	abstract public void playCollisionSound();
+
 	PrecisePoint getPoint() {
 		return position;
 	}
@@ -111,5 +116,18 @@ public abstract class GameComponent {
 
 	double getHalfWidth() {
 		return halfWidth;
+	}
+
+	protected void playSound(String path) {
+		try {
+			Clip audio = AudioSystem.getClip();
+			File audioFile = new File(path);
+			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+			audio.open(stream);
+			audio.setFramePosition(0);
+			audio.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

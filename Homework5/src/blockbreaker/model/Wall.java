@@ -41,4 +41,9 @@ public class Wall extends GameComponent {
 
 	}
 
+	@Override
+	public void playCollisionSound() {
+		// nothing
+	}
+
 }

@@ -17,6 +17,8 @@ abstract class GameBlock {
 
 	abstract void draw(Graphics2D g, Block b);
 
+	abstract String getSoundPath();
+
 	protected void drawRect(Graphics2D g, Color color, Color startColor, Color endColor, Block block) {
 		GradientPaint gradient = new GradientPaint(0, (int) (block.position.y - block.halfHeight), startColor, 0,
 				(int) (block.position.y + block.halfHeight), endColor);
@@ -69,6 +71,11 @@ class BasicBlock extends GameBlock {
 	public void affectBalls(ComponentsManager manager, Ball core) {
 		// nothing
 	}
+
+	@Override
+	String getSoundPath() {
+		return "sound/보라블록부딪침.wav";
+	}
 }
 
 class ReplicatorBlock extends GameBlock {
@@ -103,6 +110,11 @@ class ReplicatorBlock extends GameBlock {
 		manager.addDuplicatedThing(new Ball(core, 10));
 		manager.addDuplicatedThing(new Ball(core, -10));
 	}
+
+	@Override
+	String getSoundPath() {
+		return "sound/노란블록부딪침.wav";
+	}
 }
 
 public class Block extends GameComponent {
@@ -122,6 +134,7 @@ public class Block extends GameComponent {
 		double blockWidth = blocksWidth / (double) cnt;
 		double blockHeight = blocksHeight / (double) cnt;
 		int replicatorBlockCnt = 0;
+		final int maxReplicatorBlockCnt = cnt * cnt / 3;
 
 		for (int i = 0; i < cnt; i++) {
 			for (int j = 0; j < cnt; j++) {
@@ -129,7 +142,7 @@ public class Block extends GameComponent {
 				double startY = blocksStart.y + blockHeight * i;
 				PrecisePoint start = new PrecisePoint(startX, startY);
 				GameBlock gameBlock;
-				if (replicatorBlockCnt < cnt * cnt / 2) {
+				if (replicatorBlockCnt < maxReplicatorBlockCnt) {
 					boolean flag = ((int) (Math.random() * 100)) % 3 == 0;
 					if (flag) {
 						gameBlock = new ReplicatorBlock();
@@ -167,6 +180,11 @@ public class Block extends GameComponent {
 
 	@Override
 	public void resolve(ComponentsManager manager) {
+	}
+
+	@Override
+	public void playCollisionSound() {
+		super.playSound(blockManager.getSoundPath());
 	}
 
 }

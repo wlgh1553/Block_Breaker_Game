@@ -15,7 +15,7 @@ public class Ball extends GameComponent {
 
 		initShapeInfo(pos.x, pos.y);
 
-		double speed = (stage + 3) * 70;
+		double speed = (stage + 2) * 100;
 		double degree = Math.random() * 90 + 45;
 		double angle = Math.toRadians(degree);
 		vx = Math.cos(angle) * speed;
@@ -77,6 +77,9 @@ public class Ball extends GameComponent {
 		for (GameComponent other : manager.getComponents()) {
 			if (other.collisionManager.isCollision(this, other.getPoint(), other.getHalfWidth(),
 					other.getHalfHeight())) {
+
+				other.playCollisionSound();
+
 				CollisionBoundary boundary = other.collisionManager.getCollisionBoundary();
 
 				if (prevx < boundary.getXmin()) {
@@ -104,6 +107,11 @@ public class Ball extends GameComponent {
 
 			}
 		}
+	}
+
+	@Override
+	public void playCollisionSound() {
+		// nothing
 	}
 
 }

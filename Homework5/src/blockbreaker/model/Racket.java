@@ -54,4 +54,9 @@ public class Racket extends GameComponent {
 			super.position.x = 20 + super.halfWidth;
 		}
 	}
+
+	@Override
+	public void playCollisionSound() {
+		super.playSound("sound/라켓부딪침.wav");
+	}
 }
