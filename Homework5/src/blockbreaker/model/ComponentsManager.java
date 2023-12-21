@@ -13,6 +13,7 @@ public class ComponentsManager {
 	private LinkedList<GameComponent> components;
 	private HashSet<GameComponent> needToEraseComponents;
 	Racket racket;
+	private int ballCnt = -1, blockCnt = -1;
 
 	public ComponentsManager(int stage) {
 		components = new LinkedList<>();
@@ -42,8 +43,15 @@ public class ComponentsManager {
 	}
 
 	public void update() {
+		ballCnt = 0;
+		blockCnt = 0;
+
 		for (GameComponent g : components) {
 			g.update(0.016);
+			if (g instanceof Ball)
+				ballCnt++;
+			else if (g instanceof Block)
+				blockCnt++;
 		}
 	}
 
@@ -59,6 +67,14 @@ public class ComponentsManager {
 				iter.remove();
 			}
 		}
+	}
+
+	public boolean isGameOver() {
+		return ballCnt == 0;
+	}
+
+	public boolean isGameClear() {
+		return blockCnt == 0;
 	}
 
 	public void paint(Graphics2D g2d) {

@@ -52,6 +52,11 @@ class PlayPanel extends JPanel implements KeyListener, Runnable {
 			componentManager.update();
 
 			// resolve
+			if (componentManager.isGameClear()) {
+				System.out.println("clear!!");
+			} else if (componentManager.isGameOver()) {
+				System.out.println("overㅠㅠ");
+			}
 			componentManager.resolve();
 
 			// render

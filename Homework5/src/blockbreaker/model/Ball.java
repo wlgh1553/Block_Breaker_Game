@@ -52,6 +52,12 @@ public class Ball extends GameComponent {
 
 	@Override
 	public void resolve(ComponentsManager manager) {
+		// 화면 밖으로 나갔는지 검사
+		if (this.position.y > 800) {
+			manager.addEraseThing(this);
+		}
+
+		// 충돌 검사
 		GameComponent eraseComponent = null;
 		for (GameComponent other : manager.getComponents()) {
 			if (other.collisionManager.isCollision(this, other.getPoint(), other.getHalfWidth(),
