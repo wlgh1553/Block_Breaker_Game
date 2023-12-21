@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 abstract class GameBlock {
 	protected Color color;
-	private int alpha; // 0 투명 255 불투명
+	protected int alpha; // 0 투명 255 불투명
 
 	GameBlock(Color c) {
 		color = c;
@@ -17,7 +17,7 @@ abstract class GameBlock {
 
 	abstract void draw(Graphics2D g, Block b);
 
-	protected void drawRect(Graphics2D g, Color startColor, Color endColor, Block block) {
+	protected void drawRect(Graphics2D g, Color color, Color startColor, Color endColor, Block block) {
 		GradientPaint gradient = new GradientPaint(0, (int) (block.position.y - block.halfHeight), startColor, 0,
 				(int) (block.position.y + block.halfHeight), endColor);
 		g.setPaint(gradient);
@@ -30,6 +30,13 @@ abstract class GameBlock {
 		g.fillRect((int) (block.position.x - block.halfWidth + blinkSize),
 				(int) (block.position.y - block.halfHeight + blinkSize), (int) (2 * (block.halfWidth - blinkSize)),
 				(int) (2 * (block.halfHeight - blinkSize)));
+	}
+
+	protected void drawBlinkRect(Graphics2D g, Block block) {
+		Color c = new Color(255, 255, 145);
+		Color s = new Color(255, 255, 245);
+		Color e = new Color(255, 255, 45);
+		drawRect(g, c, s, e, block);
 	}
 
 	abstract public void affectBalls(ComponentsManager manager, Ball core);
@@ -55,7 +62,7 @@ class BasicBlock extends GameBlock {
 	void draw(Graphics2D g, Block b) {
 		Color startColor = color.brighter().brighter();
 		Color endColor = color.darker().darker();
-		super.drawRect(g, startColor, endColor, b);
+		super.drawRect(g, color, startColor, endColor, b);
 	}
 
 	@Override
@@ -65,6 +72,8 @@ class BasicBlock extends GameBlock {
 }
 
 class ReplicatorBlock extends GameBlock {
+	int blinkTime = 0;
+
 	ReplicatorBlock() {
 		super(new Color(200, 200, 0));
 	}
@@ -73,7 +82,19 @@ class ReplicatorBlock extends GameBlock {
 	void draw(Graphics2D g, Block b) {
 		Color startColor = color.brighter().brighter();
 		Color endColor = color.darker().darker();
-		super.drawRect(g, startColor, endColor, b);
+		if (blinkTime == 0) {
+			super.drawRect(g, color, startColor, endColor, b);
+		} else {
+			super.drawBlinkRect(g, b);
+			blinkTime = (blinkTime - 1５) < 0 ? 0 : blinkTime - 1５;
+		}
+
+		if (super.alpha == 255 && blinkTime == 0) {
+			boolean rand = (int) (Math.random() * 1000) <= 3;
+			if (rand) {
+				blinkTime = ２00;
+			}
+		}
 	}
 
 	@Override
