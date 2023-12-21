@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.LinkedList;
 
 public class Wall extends GameComponent {
 
@@ -38,7 +37,7 @@ public class Wall extends GameComponent {
 	}
 
 	@Override
-	public void resolve(LinkedList<GameComponent> others) {
+	public void resolve(ComponentsManager manager) {
 
 	}
 

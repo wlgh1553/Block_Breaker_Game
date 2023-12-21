@@ -2,7 +2,6 @@ package blockbreaker.model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.LinkedList;
 
 //너무 마음에 안드는데 일단은!
 class CollisionBoundary {
@@ -44,11 +43,13 @@ interface BallDetectable {
 
 class BallDetector implements BallDetectable { // wall, block, racket
 	CollisionBoundary boundary;
+	boolean isCrashed = false;
 
 	@Override
 	public boolean isCollision(Ball ball, PrecisePoint myPos, double hw, double hh) {
 		boundary = new CollisionBoundary(ball.getRadius(), myPos, hw, hh);
-		return boundary.checkCollision(ball.getPoint());
+		isCrashed = boundary.checkCollision(ball.getPoint());
+		return isCrashed;
 	}
 
 	@Override
@@ -76,11 +77,6 @@ class PrecisePoint {
 	double x;
 	double y;
 
-	PrecisePoint(int _x, int _y) {
-		x = _x;
-		y = _y;
-	}
-
 	PrecisePoint(double _x, double _y) {
 		x = _x;
 		y = _y;
@@ -101,7 +97,7 @@ public abstract class GameComponent {
 
 	abstract public void update(double dt);
 
-	abstract public void resolve(LinkedList<GameComponent> others);
+	abstract public void resolve(ComponentsManager manager);
 
 	PrecisePoint getPoint() {
 		return position;

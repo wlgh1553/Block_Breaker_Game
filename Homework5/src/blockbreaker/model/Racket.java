@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.LinkedList;
 
 public class Racket extends GameComponent {
 	private double vx, speed;
@@ -48,7 +47,7 @@ public class Racket extends GameComponent {
 	}
 
 	@Override
-	public void resolve(LinkedList<GameComponent> others) {
+	public void resolve(ComponentsManager manager) {
 		if (super.position.x + super.halfWidth >= 800 - 34) {
 			super.position.x = 800 - 34 - super.halfWidth;
 		} else if (super.position.x - super.halfWidth <= 20) {

@@ -18,7 +18,7 @@ abstract class GameBlock {
 		g.fillRect((int) (block.position.x - block.halfWidth), (int) (block.position.y - block.halfHeight),
 				(int) (2 * block.halfWidth), (int) (2 * block.halfHeight));
 
-		int blinkSize = 3;
+		double blinkSize = block.halfHeight / 13;
 		g.setColor(color);
 		g.fillRect((int) (block.position.x - block.halfWidth + blinkSize),
 				(int) (block.position.y - block.halfHeight + blinkSize), (int) (2 * (block.halfWidth - blinkSize)),
@@ -103,9 +103,7 @@ public class Block extends GameComponent {
 	}
 
 	@Override
-	public void resolve(LinkedList<GameComponent> others) {
-		// TODO Auto-generated method stub
-
+	public void resolve(ComponentsManager manager) {
 	}
 
 }

@@ -3,14 +3,14 @@ package blockbreaker.model;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.LinkedList;
 
 public class Ball extends GameComponent {
 	private double prevx, prevy;
 	private double nowx, nowy;
 	private double vx, vy;
+	public static final int RADIUS = 5;
 
-	public Ball(Point pos, int radius, double speed) {
+	public Ball(Point pos, int stage) {
 		super(new BallIgnorer());
 
 		super.position = new PrecisePoint(pos.x, pos.y);
@@ -18,10 +18,11 @@ public class Ball extends GameComponent {
 		prevy = position.y;
 		nowx = prevx;
 		nowy = prevy;
-		super.halfWidth = radius;
-		super.halfHeight = radius;
+		super.halfWidth = RADIUS;
+		super.halfHeight = RADIUS;
 		super.color = Color.white;
 
+		double speed = (stage + 2) * 100;
 		double degree = Math.random() * 90 + 45;
 		double angle = Math.toRadians(degree);
 		vx = Math.cos(angle) * speed;
@@ -50,8 +51,9 @@ public class Ball extends GameComponent {
 	}
 
 	@Override
-	public void resolve(LinkedList<GameComponent> others) {
-		for (GameComponent other : others) {
+	public void resolve(ComponentsManager manager) {
+		GameComponent eraseComponent = null;
+		for (GameComponent other : manager.getComponents()) {
 			if (other.collisionManager.isCollision(this, other.getPoint(), other.getHalfWidth(),
 					other.getHalfHeight())) {
 				CollisionBoundary boundary = other.collisionManager.getCollisionBoundary();
@@ -72,6 +74,11 @@ public class Ball extends GameComponent {
 					vy = -vy;
 					position.y = boundary.getYmax();
 				}
+
+				if (other instanceof Block) {
+					manager.addEraseThing(other);
+				}
+
 			}
 		}
 	}
