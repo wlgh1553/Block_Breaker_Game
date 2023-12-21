@@ -13,6 +13,7 @@ public class ComponentsManager {
 	private LinkedList<Ball> needToAddBalls;
 	private LinkedList<Block> fadingBlocks;
 	Racket racket;
+	private int removedBlockCnt = 0;
 
 	public ComponentsManager(int stage) {
 		components = new LinkedList<>();
@@ -63,6 +64,7 @@ public class ComponentsManager {
 			if (!here.isAlive) {
 				if (here instanceof Block) {
 					fadingBlocks.add((Block) here);
+					removedBlockCnt++;
 				}
 				iter.remove();
 			}
@@ -98,6 +100,10 @@ public class ComponentsManager {
 				cnt++;
 		}
 		return cnt == 0;
+	}
+
+	public int getRemovedBlockCnt() {
+		return removedBlockCnt;
 	}
 
 	public void paint(Graphics2D g2d) {

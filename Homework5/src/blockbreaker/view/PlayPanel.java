@@ -10,9 +10,11 @@ import blockbreaker.model.ComponentsManager;
 public class PlayPanel extends Screen implements Runnable {
 	ComponentsManager componentManager;
 	private boolean isClearStage = false;
+	private int stage;
 
 	public PlayPanel(BlockBreakerGame b, int stage) {
 		super(b);
+		this.stage = stage;
 		componentManager = new ComponentsManager(stage);
 
 		Thread t = new Thread(this);
@@ -41,9 +43,12 @@ public class PlayPanel extends Screen implements Runnable {
 			if (isClearStage)
 				break;
 			if (componentManager.isGameClear()) {
-				System.out.println("clear!!");
+				isClearStage = true;
+				super.controller.updateNowScore(componentManager.getRemovedBlockCnt());
+				super.controller.changeScreen(new PlayPanel(super.controller, stage + 1));
 			} else if (componentManager.isGameOver()) {
 				isClearStage = true;
+				super.controller.updateNowScore(componentManager.getRemovedBlockCnt());
 				super.controller.changeScreen(new EndPanel(controller));
 			}
 
@@ -77,6 +82,8 @@ public class PlayPanel extends Screen implements Runnable {
 			componentManager.changeRacketDirection(1);
 			repaint();
 		} else if (e.getKeyCode() == e.VK_SPACE) {
+			isClearStage = true;
+			super.controller.updateNowScore(componentManager.getRemovedBlockCnt());
 			super.controller.changeScreen(new EndPanel(controller));
 		}
 	}

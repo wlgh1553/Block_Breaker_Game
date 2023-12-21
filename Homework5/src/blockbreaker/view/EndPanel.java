@@ -24,7 +24,7 @@ public class EndPanel extends Screen {
 		high.setBounds(250, 400, 800, 60);
 		texts.add(high);
 
-		MyText your = new MyText("YOUR SCORE: " + b.getHighScore(), f, Color.gray, 0);
+		MyText your = new MyText("YOUR SCORE: " + b.getNowScore(), f, Color.gray, 0);
 		your.setBounds(250, 460, 800, 60);
 		texts.add(your);
 

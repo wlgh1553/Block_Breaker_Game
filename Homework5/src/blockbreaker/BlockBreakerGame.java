@@ -3,7 +3,7 @@ package blockbreaker;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import blockbreaker.view.EndPanel;
+import blockbreaker.view.StartPanel;
 
 public class BlockBreakerGame extends JFrame {
 	JPanel now;
@@ -15,7 +15,7 @@ public class BlockBreakerGame extends JFrame {
 		setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		now = new EndPanel(this);
+		now = new StartPanel(this);
 		add(now);
 
 		setVisible(true);
@@ -27,6 +27,16 @@ public class BlockBreakerGame extends JFrame {
 		add(now);
 		now.setFocusable(true);
 		now.requestFocus();
+	}
+
+	public void resetNowScore() {
+		nowScore = 0;
+	}
+
+	public void updateNowScore(int blockCnt) {
+		nowScore += (blockCnt * 10);
+		if (nowScore > highScore)
+			highScore = nowScore;
 	}
 
 	public int getHighScore() {

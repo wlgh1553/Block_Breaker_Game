@@ -15,7 +15,7 @@ public class Ball extends GameComponent {
 
 		initShapeInfo(pos.x, pos.y);
 
-		double speed = (stage + 2) * 100;
+		double speed = (stage + 3) * 70;
 		double degree = Math.random() * 90 + 45;
 		double angle = Math.toRadians(degree);
 		vx = Math.cos(angle) * speed;

@@ -35,6 +35,8 @@ public class StartPanel extends Screen {
 		for (MyText t : texts) {
 			add(t);
 		}
+
+		b.resetNowScore();
 	}
 
 	@Override
