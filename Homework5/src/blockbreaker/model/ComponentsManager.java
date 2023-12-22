@@ -33,10 +33,10 @@ public class ComponentsManager {
 		components.add(new Ball(new Point(400, 650), stage));
 		components.add(new Wall(new Point(0, 0), 800, 20));
 		components.add(new Wall(new Point(0, 20), 20, 800 - 20));
-		components.add(new Wall(new Point(800 - 34, 20), 20, 800));
+		components.add(new Wall(new Point(800 - 30, 20), 20, 800));
 		racket = new Racket(new Point(400, 680), 150, 30);
 		components.add(racket);
-		Block.createBlock(stage, new Point(20, 20), 800 - 54, 400, components);
+		Block.createBlock(stage, new Point(20, 20), 800 - 50, 400, components);
 	}
 
 	public void addDuplicatedThing(Ball b) {

@@ -30,9 +30,12 @@ public class StartPanel extends Screen {
 		texts.add(subTitle2);
 
 		f = new Font("궁서체", Font.BOLD, 100);
-		MyText mainTitle = new MyText("BLOCK BREAKER", f, Color.white, 0);
-		mainTitle.setBounds(50, 320, 800, 110);
-		texts.add(mainTitle);
+		String[] strings = { "B", "L", "O", "C", "K", " ", "B", "R", "E", "A", "K", "E", "R" };
+		for (int i = 0; i < strings.length; i++) {
+			MyText myText = new MyText(strings[i], f, Color.white, 800, i * 100);
+			myText.setBounds(55 + i * 50, 320, 150, 150);
+			texts.add(myText);
+		}
 
 		f = new Font("궁서체", Font.PLAIN, 30);
 		MyText info = new MyText("PRESS SPACEBAR TO PLAY!", f, new Color(255, 40, 40), 100);

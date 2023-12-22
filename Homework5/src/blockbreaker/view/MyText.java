@@ -10,6 +10,7 @@ public class MyText extends JLabel implements Runnable {
 	private boolean turnOn = false;
 	private Font font;
 	private Color color;
+	private int startWait = 0;
 
 	public MyText(String text, Font font, Color color, int inv) {
 		super(text);
@@ -25,8 +26,18 @@ public class MyText extends JLabel implements Runnable {
 		}
 	}
 
+	public MyText(String text, Font font, Color color, int inv, int startWait) {
+		this(text, font, color, inv);
+		this.startWait = startWait;
+	}
+
 	@Override
 	public void run() {
+		try {
+			Thread.sleep(startWait);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		while (true) {
 			if (turnOn)
 				this.setForeground(color);
