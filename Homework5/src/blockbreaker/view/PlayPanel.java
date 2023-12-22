@@ -3,7 +3,7 @@ package blockbreaker.view;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.io.File;
+import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -113,8 +113,8 @@ public class PlayPanel extends Screen implements Runnable {
 	private void playSound(String path) {
 		try {
 			Clip audio = AudioSystem.getClip();
-			File audioFile = new File(path);
-			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+			URL url = getClass().getClassLoader().getResource(path);
+			AudioInputStream stream = AudioSystem.getAudioInputStream(url);
 			audio.open(stream);
 			audio.setFramePosition(0);
 			audio.start();

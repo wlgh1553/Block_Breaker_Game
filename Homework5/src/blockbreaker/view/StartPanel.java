@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.io.File;
+import java.net.URL;
 import java.util.LinkedList;
 
 import javax.sound.sampled.AudioInputStream;
@@ -50,8 +50,8 @@ public class StartPanel extends Screen {
 	private void setAudio() {
 		try {
 			audio = AudioSystem.getClip();
-			File audioFile = new File("sound/시작화면.wav");
-			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+			URL url = getClass().getClassLoader().getResource("sound/시작화면.wav");
+			AudioInputStream stream = AudioSystem.getAudioInputStream(url);
 			audio.open(stream);
 			audio.setFramePosition(0);
 			audio.start();

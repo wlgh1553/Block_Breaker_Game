@@ -2,13 +2,12 @@ package blockbreaker.model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.io.File;
+import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-//너무 마음에 안드는데 일단은!
 class CollisionBoundary {
 	private double xmin, ymin, xmax, ymax;
 
@@ -121,8 +120,8 @@ public abstract class GameComponent {
 	protected void playSound(String path) {
 		try {
 			Clip audio = AudioSystem.getClip();
-			File audioFile = new File(path);
-			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+			URL url = getClass().getClassLoader().getResource(path);
+			AudioInputStream stream = AudioSystem.getAudioInputStream(url);
 			audio.open(stream);
 			audio.setFramePosition(0);
 			audio.start();
